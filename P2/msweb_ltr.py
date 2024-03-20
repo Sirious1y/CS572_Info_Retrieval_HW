@@ -1,5 +1,8 @@
 import pandas as pd
 import os
+import pyterrier as pt
+from pyterrier.measures import *
+import pyltr
 
 
 def libsvm_to_csv(file_path, save_path=None):
@@ -49,10 +52,17 @@ def process_directory(input_directory, output_directory):
 
 
 if __name__ == '__main__':
-    for i in range(1, 6):
-        input_directory = output_directory = f'MQ2008/Fold{i}'
-        # Create the output directory if it doesn't exist
-        os.makedirs(output_directory, exist_ok=True)
-        # Process all files in the input directory and its subdirectories
-        print("processing: " + input_directory)
-        process_directory(input_directory, output_directory)
+    pt.init()
+    # convert all libsvm files to csv
+    # for i in range(1, 6):
+    #     input_directory = output_directory = f'MQ2008/Fold{i}'
+    #     # Create the output directory if it doesn't exist
+    #     os.makedirs(output_directory, exist_ok=True)
+    #     # Process all files in the input directory and its subdirectories
+    #     print("processing: " + input_directory)
+    #     process_directory(input_directory, output_directory)
+
+    train_path = 'MQ2008/Fold1/train.csv'
+    train_df = pd.read_csv(train_path)
+    QidLookupTransformer = pt.Transformer.from_df(train_df, uniform=True)
+    pipeline = QidLookupTransformer
